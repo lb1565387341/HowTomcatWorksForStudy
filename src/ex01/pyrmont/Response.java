@@ -1,5 +1,6 @@
 package ex01.pyrmont;
 
+
 import java.io.*;
 
 public class Response {
@@ -17,28 +18,23 @@ public class Response {
 
     public void sendStaticResources() {
         String uri = request.getUri();
-        File file = new File(HttpServer.WEB_ROOT + uri);
-        FileReader reader = null;
-        BufferedReader br = null;
+        System.out.println("访问地址：" + HttpServer.WEB_ROOT + uri);
+        File file = new File(HttpServer.WEB_ROOT, uri);
+        FileInputStream fis = null;
+        BufferedInputStream br = null;
         if (file.exists()) {
             try {
-                reader = new FileReader(file);
-                br = new BufferedReader(reader, BUFFER_SIZE);
-                char[] temp = new char[BUFFER_SIZE];
+                fis = new FileInputStream(file);
+                br = new BufferedInputStream(fis, BUFFER_SIZE);
+                byte[] temp = new byte[BUFFER_SIZE];
                 int i = br.read(temp, 0, BUFFER_SIZE);
                 while (i != -1) {
-                    output.write(temp.toString().getBytes(), 0, i);
+                    output.write(temp, 0, i);
+                    i = br.read(temp, 0, BUFFER_SIZE);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
                 if (br != null) {
                     try {
                         br.close();
@@ -46,8 +42,25 @@ public class Response {
                         e.printStackTrace();
                     }
                 }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } else {
+            String errorMsg = "HTTP/1.1 404 File Not Found\r\n" +
+                    "Content-Type: text/html\r\n" +
+                    "Content-Length: 23\r\n" +
+                    "\r\n" +
+                    "<h1>File Not Found</h1>";
+            try {
+                output.write(errorMsg.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

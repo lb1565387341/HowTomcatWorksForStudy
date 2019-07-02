@@ -21,12 +21,16 @@ public class Request {
         byte[] temp = new byte[BUFFER_SIZE];
         try {
             int i = input.read(temp);
-            while (i > -1) {
+            while (i > -1 && i > BUFFER_SIZE) {
                 for (int j = 0; j < i; j++) {
                     sb.append((char) temp[j]);
                 }
                 i = input.read(temp);
             }
+            for (int j = 0; j < i; j++) {
+                sb.append((char) temp[j]);
+            }
+            System.out.println(sb.toString());
             uri = parseUri(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
