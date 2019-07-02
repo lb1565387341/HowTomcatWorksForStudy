@@ -6,7 +6,7 @@ import java.io.*;
 public class Response {
     private OutputStream output;
     private Request request;
-    private final int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 2048;
 
     public void setRequest(Request request) {
         this.request = request;

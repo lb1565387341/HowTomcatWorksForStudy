@@ -6,7 +6,7 @@ import java.io.InputStream;
 public class Request {
     private String uri;
     private InputStream input;
-    private int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 2048;
 
     Request(InputStream input) {
         this.input = input;
@@ -44,6 +44,6 @@ public class Request {
             if (index2 > -1)
                 return msg.substring(index1 + 1, index2);
         }
-        return "";
+        return null;
     }
 }

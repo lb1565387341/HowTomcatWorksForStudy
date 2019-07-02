@@ -13,7 +13,7 @@ public class HttpServer {
 
     private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 
-    private Boolean SHUTDOWN = false;
+    private boolean SHUTDOWN = false;
 
     public static void main(String[] args) {
         HttpServer server = new HttpServer();
